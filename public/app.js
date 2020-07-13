@@ -9,9 +9,10 @@ fetchAndVisualizeData();
 function visualizeData(data) {
     
   visualizeMatchesPlayedPerYear(data.matchesPlayedPerYear);
-  visualizeMatchesWonByEachTeam(data.matchesWonByEachTeam);
+  visualizeMatchesWonByEachTeam(data.matchesWonByEachTeam, data.mostWins);
   visualizeExtraRunsConcededByEachTeamIn2016(data.extraRunsConcededByEachTeamIn2016);
   visualizeTenEconomicalBowlersOf2015(data.tenEconomicalBowlersOf2015);
+  visualizeTossWinningTeamPerYear(data.tossWinningTeamPerYear, data.mostWins);
   return;
 }
 
@@ -21,7 +22,7 @@ function visualizeMatchesPlayedPerYear(matchesPlayedPerYear) {
     seriesData.push([year, matchesPlayedPerYear[year]]);
   }
 
-  Highcharts.chart("matches-played-per-year", {
+  Highcharts.chart("container1", {
     chart: {
       type: "column"
     },
@@ -50,26 +51,16 @@ function visualizeMatchesPlayedPerYear(matchesPlayedPerYear) {
   });
 }
 
-function visualizeMatchesWonByEachTeam(matchesWonByEachTeam) {
-  const seriesData = [];
-  const cat=[];
-  const winners=[];
-  for (let year in matchesWonByEachTeam) {
-      const winningTeams={};
-      cat.push(year);   
-      
-      winningTeams.data=[];
-      for(let winner in matchesWonByEachTeam[year]){
-          if(!winners.includes(winner) && winningTeams.name == undefined){
-              winners.push(winner);
-              winningTeams.name=winner;
-          }
-          winningTeams.data.push([year, matchesWonByEachTeam[year][winner]])
-      }
-      seriesData.push(winningTeams);
-    }
+function visualizeMatchesWonByEachTeam(matchesWonByEachTeam, mostWins) {
+  const teams = Object.keys(mostWins);
+  const seasons=Object.keys(matchesWonByEachTeam);
+  let seriesData=[];
+  seriesData = teams.map(team => ({
+    name: team,
+    data: seasons.map(season => matchesWonByEachTeam[season][team] || 0)
+  }));
 
-Highcharts.chart("matches-won-by-each-team", {
+Highcharts.chart("container2", {
     chart: {
       type: "column"
     },
@@ -81,32 +72,32 @@ Highcharts.chart("matches-won-by-each-team", {
         'Source: <a href="https://www.kaggle.com/nowke9/ipldata/data">IPL Dataset</a>'
     },
     xAxis: {
-        categories: cat
+      title: {
+        text: "Teams"
+      },
+        categories: seasons,
+        crosshair: true
     },
-
     yAxis: {
-        allowDecimals: true,
-        min: 0.0,
+        min: 0,
         title: {
-            text: 'Matches'
+            text: 'Total Wins'
         }
     },
-
     tooltip: {
-        formatter: function () {
-            return '<b>' + this.x + '</b><br/>' +
-                this.series.name + ': ' + this.y + '<br/>' +
-                'Total: ' + this.point.stackTotal;
-        }
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y}</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
     },
-
     plotOptions: {
         column: {
-            stacking: 'normal'
+            pointPadding: 0.2,
+            borderWidth: 0
         }
     },
-
-
     series: seriesData
   });
 }
@@ -120,12 +111,12 @@ function visualizeExtraRunsConcededByEachTeamIn2016(extraRunsConcededByEachTeamI
 
 
 
-  Highcharts.chart("extra-run-conceded-by-each-team-of-2016", {
+  Highcharts.chart("container3", {
     chart: {
       type: "column"
     },
     title: {
-      text: "For the year 2016, plot the extra runs conceded by each team"
+      text: "For the year 2016, extra runs conceded by each team"
     },
     subtitle: {
       text:
@@ -156,13 +147,13 @@ function visualizeTenEconomicalBowlersOf2015(tenEconomicalBowlersOf2015) {
   for (let year in tenEconomicalBowlersOf2015) {
     seriesData.push([year, tenEconomicalBowlersOf2015[year].economuRate]);
   }
-  seriesData = seriesData.sort((a, b) => b[1] - a[1]).slice(0, 11);
-  Highcharts.chart("ten-econommical-blowers-of-2015", {
+  seriesData = seriesData.sort((a, b) => a[1] - b[1]).slice(0, 11);
+  Highcharts.chart("container4", {
     chart: {
       type: "column"
     },
     title: {
-      text: "For the year 2015, plot the top 10 economical bowlers along with their economy rates"
+      text: "For the year 2015, top 10 economical bowlers along with their economy rates"
     },
     subtitle: {
       text:
@@ -183,5 +174,56 @@ function visualizeTenEconomicalBowlersOf2015(tenEconomicalBowlersOf2015) {
         data: seriesData
       }
     ]
+  });
+}
+
+function visualizeTossWinningTeamPerYear(tossWinningTeamPerYear, mostWins){
+      const teams = Object.keys(mostWins);
+  const seasons=Object.keys(tossWinningTeamPerYear);
+  let seriesData=[];
+  seriesData = teams.map(team => ({
+    name: team,
+    data: seasons.map(season => tossWinningTeamPerYear[season][team] || 0)
+  }));
+
+Highcharts.chart("container5", {
+    chart: {
+      type: "column"
+    },
+    title: {
+      text: "Toss Winning team over all the years of IPL"
+    },
+    subtitle: {
+      text:
+        'Source: <a href="https://www.kaggle.com/nowke9/ipldata/data">IPL Dataset</a>'
+    },
+    xAxis: {
+      title: {
+        text: "Years"
+      },
+        categories: seasons,
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Total Toss Wins'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y}</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: seriesData
   });
 }

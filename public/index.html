@@ -1,24 +1,90 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="IPL visualization">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <link href="./styles.css" rel="stylesheet">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="IPL visualization" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0"
+    />
+    <link href="./styles.css" rel="stylesheet" />
+    <style>
+      .a {
+        box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.5);
+        padding: 15px;
+      }
+      h1 {
+        text-align: center;
+      }
+      button {
+        background-color: whitesmoke;
+        border-style: solid;
+        border: 3px, grey;
+        border-radius: 4px;
+        text-decoration: none;
+        color: black;
+        padding: 15px 32px;
+        text-align: center;
+        font-weight: bold;
+        display: inline-block;
+        font-size: 16px;
+      }
+      button:hover {
+        background-color: salmon;
+      }
+      select {
+        background-color: whitesmoke;
+        border-style: solid;
+        border: 3px, grey;
+        border-radius: 4px;
+        text-decoration: none;
+        color: black;
+        padding: 15px 32px;
+        text-align: center;
+        font-weight: bold;
+        display: inline-block;
+        font-size: 16px;
+      }
+    </style>
     <title>
-        IPL visualization
+      IPL visualization
     </title>
-    <script src="./highcharts.js"></script>
-</head>
+  </head>
 
-<body>
-<h1>IPL Dataset visualization</h1>
-<div id="matches-played-per-year" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-<div id="matches-won-by-each-team" style="min-width: 310px; height: 400px; margin: 0 auto"></div>    
-<div id="extra-run-conceded-by-each-team-of-2016" style="min-width: 310px; height: 400px; margin: 0 auto"></div>    
-<div id="ten-econommical-blowers-of-2015" style="min-width: 310px; height: 400px; margin: 0 auto"></div>    
-    <script src="./app.js"></script>
+  <body>
+    <div>
+      <h1>IPL Dataset visualization</h1>
+      <div
+        id="container1"
+        class="a"
+        style="width: 1130px; height: 500px; margin: 0 auto;margin-top:50px"
+      ></div>
+      <div
+        id="container2"
+        class="a"
+        style="width: 1130px; height: 500px; margin: 0 auto; margin-top: 50px"
+      ></div>
+      <div
+        id="container3"
+        class="a"
+        style="width: 1130px; height: 500px; margin: 0 auto; margin-top: 50px"
+      ></div>
+      <div></div>
+      <div
+        id="container4"
+        class="a"
+        style="width: 1130px; height: 500px; margin: 0 auto; margin-top: 50px"
+      ></div>
+      <div
+        id="container5"
+        class="a"
+        style="width: 1130px; height: 1000px; margin: 0 auto; margin-top: 50px"
+      ></div>
 
-</body>
+      <script src="./highcharts.js"></script>
+
+      <script src="./app.js"></script>
+    </div>
+  </body>
+</html>
